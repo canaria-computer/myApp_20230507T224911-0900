@@ -1,0 +1,13 @@
+/*!*******************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/web/App.css ***!
+  \*******************************************************************/
+.container {
+  text-align: center;
+  font-family: sans-serif;
+}
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+/*# sourceMappingURL=app.css.map*/

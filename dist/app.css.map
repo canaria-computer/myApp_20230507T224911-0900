@@ -1,0 +1,1 @@
+{"version":3,"file":"app.css","mappings":";;;AAAA;EACE,kBAAkB;EAClB,uBAAuB;AACzB;;AAEA;EACE,uCAAuC;AACzC,C","sources":["webpack://myApp/./src/web/App.css"],"sourcesContent":[".container {\n  text-align: center;\n  font-family: sans-serif;\n}\n\nbody {\n  font-family: 'Noto Sans JP', sans-serif;\n}"],"names":[],"sourceRoot":""}

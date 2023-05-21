@@ -1,0 +1,103 @@
+{
+  "name": "myApp",
+  "productName": "ニチケンテスター",
+  "keywords": [
+    "日検",
+    "日本情報処理検定",
+    "情報処理検定",
+    "IT"
+  ],
+  "description": "myApp",
+  "version": "0.1.0",
+  "license": "MIT",
+  "author": {
+    "name": "mr-ak"
+  },
+  "main": "dist/main.js",
+  "build": {
+    "mac": {
+      "icon": "src\\components\\icon\\icon.png"
+    },
+    "win": {
+      "icon": "src\\components\\icon\\icon.png"
+    },
+    "nsis": {
+      "shortcutName": "ニチケンテスター",
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "scripts": {
+    "dev": "rimraf dist && run-p dev:webpack dev:electron",
+    "build": "rimraf dist && cross-env NODE_ENV=\"production\" webpack --progress",
+    "dev:webpack": "cross-env NODE_ENV=\"development\" webpack --progress",
+    "dev:electron": "wait-on dist/main.js dist/index.html && electronmon .",
+    "upload": "ROBOCOPY C:\\Users\\mr-ak\\Desktop\\myElectronApp\\myApp \"C:\\Users\\mr-ak\\Google ドライブ\\dev\\myElectronApp\\myApp\" /MIR",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "electronmon": {
+    "patterns": [
+      "dist/**/*"
+    ]
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.8",
+    "@emotion/styled": "^11.10.8",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.12.2",
+    "@reduxjs/toolkit": "^1.9.5",
+    "@types/encoding-japanese": "^2.0.1",
+    "@types/html2json": "^1.0.1",
+    "@types/iconv": "^3.0.1",
+    "@types/lodash": "^4.14.194",
+    "@types/react-router-dom": "^5.3.3",
+    "dom-compare": "^0.1.1",
+    "electron-squirrel-startup": "^1.0.0",
+    "encoding-japanese": "^2.0.0",
+    "fs": "^0.0.1-security",
+    "html2json": "^1.0.2",
+    "jschardet": "^3.0.0",
+    "lodash": "^4.17.21",
+    "md5-file": "^5.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-redux": "^8.0.5",
+    "react-router-dom": "^6.11.0",
+    "react-select": "^5.7.2",
+    "react-slide-routes": "^3.0.3"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.1.1",
+    "@electron-forge/maker-deb": "^6.1.1",
+    "@electron-forge/maker-rpm": "^6.1.1",
+    "@electron-forge/maker-squirrel": "^6.1.1",
+    "@electron-forge/maker-zip": "^6.1.1",
+    "@types/diff-match-patch": "^1.0.32",
+    "@types/express": "^4.17.17",
+    "@types/node": "^18.16.4",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.1",
+    "@types/xmldom": "^0.1.31",
+    "cross-env": "^7.0.3",
+    "css-loader": "^6.7.3",
+    "diff-match-patch": "^1.0.5",
+    "electron": "^24.2.0",
+    "electronmon": "^2.0.2",
+    "express": "^4.18.2",
+    "html-webpack-plugin": "^5.5.1",
+    "mini-css-extract-plugin": "^2.7.5",
+    "node-html-parser": "^6.1.5",
+    "npm-run-all": "^4.1.5",
+    "path": "^0.12.7",
+    "rimraf": "^5.0.0",
+    "ts-loader": "^9.4.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4",
+    "wait-on": "^7.0.1",
+    "webpack": "^5.81.0",
+    "webpack-cli": "^5.0.2",
+    "xmldom": "^0.6.0",
+    "xpath-to-selector": "^1.0.1"
+  }
+}
