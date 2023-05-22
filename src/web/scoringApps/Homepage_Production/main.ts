@@ -253,8 +253,18 @@ export default class HomepageProducitonScoring {
 
         const ownAnsIndexHtml = parser.parseFromString(ownAnsHtmlUtf8Data, "text/html");
         const modelAnsIndexHtml = parser.parseFromString(modelAnsHtmlUtf8Data, "text/html");
+        // スタイルシートのリンクが間違っているか判定
+        const ownStylesheetLink = rootownAnsHtml.querySelectorAll('head > link[rel="stylesheet"]');
+        const modelStylesheetLink = rootmodelAnsHtml.querySelectorAll('head > link[rel="stylesheet"]');
+        if (modelStylesheetLink.length > 0) {
+            if (ownStylesheetLink[0].getAttribute("href") !== modelStylesheetLink[0].getAttribute("href")) {
+                this.inspectionDataArray.push([`${fileName}:スタイルシートの設定の誤り`, true, 10]);
+            } else if (modelStylesheetLink.length === 0) {
+                this.inspectionDataArray.push([`${fileName}:スタイルシートの未処理`, true, 10]);
+            }
+        }
+        // ---
         const result = domCompare.compare(ownAnsIndexHtml, modelAnsIndexHtml, options);
-        // TODO 文字誤り+画像+表+リスト+リンク を調べる
         const diff = result.getDifferences() as Array<{ node: string, message: string }>;
 
         const nomalElement = diff.filter((diffElement: { node: string; }) =>
@@ -336,7 +346,23 @@ export default class HomepageProducitonScoring {
                 this.inspectionDataArray.push([`${fileName}:フォームコンポーネント(<input /> Element)の誤り\nセレクタ${OwnAnsSelector}`, true, 5])
             }
 
-            // TODO: ID,class,style sheet link
+            if (selectModelAnsElement.length > 0) {
+                const ownElement = selectOwnAnsElement[0];
+                const modelElement = selectModelAnsElement[0];
+                // ID
+                if (ownElement.getAttribute("id") !== modelElement.getAttribute("id")) {
+                    this.inspectionDataArray.push([`${fileName}:ID属性の誤り\nセレクタ${OwnAnsSelector}`, true, 5])
+                }
+                // class
+                if (!_.isEqual(ownElement.classNames.split(" "), modelElement.classNames.split(" "))) {
+                    console.log((ownElement.classNames.split(" ")), (modelElement.classNames.split(" ")));
+                    this.inspectionDataArray.push([`${fileName}:クラスリストの誤り\nセレクタ${OwnAnsSelector}`, true, 5])
+                }
+                // if (this.compareAttributes(ownElement, modelElement)) {
+                //     this.inspectionDataArray.push([`${fileName}:その他の属性の設定値の誤り\nセレクタ${OwnAnsSelector}`, true, 5])
+                // };
+
+            }
             // --->
         }
 
@@ -523,6 +549,20 @@ export default class HomepageProducitonScoring {
         }
         return false;
     }
+    /**
+     * data-* , id , class List 以外の属性を比較し真偽値を返す
+     * @param element1 比較 HTML 要素
+     * @param element2 比較 HTML 要素
+     * @returns data-* , id , class List 以外の属性が一致するかどうか
+     */
+    private compareAttributes(element1: HTMLElement, element2: HTMLElement): boolean {
+        const attributes1 = _.keys(element1.attributes).filter(key => key !== "id" && key !== "class" && key !== "href" && key !== "border" && !(key.startsWith("data-")));
+        const attributes2 = _.keys(element2.attributes).filter(key => key !== "id" && key !== "class" && key !== "href" && key !== "border" && !(key.startsWith("data-")));
+        console.log(attributes1, attributes2);
+        return attributes1.length === attributes2.length &&
+            attributes1.every(key => element1.getAttribute(key) === element2.getAttribute(key));
+    }
+
 
 }
 
