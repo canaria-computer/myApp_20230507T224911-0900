@@ -66,6 +66,8 @@ const modelAnswerFileInput: React.FC = () => {
 
                 <Button variant="outlined" startIcon={<NavigateBeforeIcon />} component={RouterLink} to='/ownAnswerFileInputScreen' onClick={() => {
                     dispatch(stepDown());
+                    // @ts-ignore
+                    window.NavigationOperator.goBack();
                 }}>戻る</Button>
 
                 <Button variant="contained"
