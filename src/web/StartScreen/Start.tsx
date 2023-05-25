@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "..";
 import { stepUp } from "../../Features/stepInfo";
 import { setExamination, setGrade } from "../../Features/ExaminationAndGradeInfo";
+import { resetPath } from "../../Features/FilesAndFolderInfo";
 
 const examinationTypeOptions = new ExaminationType();
 
@@ -19,6 +20,7 @@ const Start = () => {
     // store からの情報
     const stepperInfo = useSelector((state: RootState) => state.stepper);
     const examAndGradeInfo = useSelector((state: RootState) => state.examinationGradeInfo);
+    const fileAndFolderInfo = useSelector((state: RootState) => state.FilesAndFolderInfo);
 
     const [examinationSelected, setExaminationSelected] = useState<ExaminationSelectedType | null>((() => {
         // 前の状態から戻す
@@ -74,6 +76,11 @@ const Start = () => {
             gradeSclected?.value === undefined || gradeSclected.value === null || gradeSclected.value === ""
         ) {
             throw new Error();
+        }
+
+        // 選択済みのファイルがあるときに テストする 検定が変更されていた時
+        if (examAndGradeInfo.examination !== fileAndFolderInfo.uploadFileOrFolderType) {
+            dispatch(resetPath());
         }
         dispatch(setExamination(examinationSelected.value))
         dispatch(setGrade(gradeSclected.value as typeof ExaminationType.prototype.SUPPORT_GRADE_TABLE[typeof ExaminationType.prototype.EXAMINATION_LIST[number]["value"]][number] | null))
@@ -147,7 +154,9 @@ const Start = () => {
                 </Typography>
             </Grid>
             <button onClick={() => {
-                console.log(examAndGradeInfo);
+                // console.log(examAndGradeInfo);
+                // console.log(examinationSelected);
+                console.log(fileAndFolderInfo);
             }}>debug</button>
         </>
     )

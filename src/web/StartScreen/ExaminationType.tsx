@@ -11,8 +11,8 @@ export default class ExaminationType {
 
     private readonly _ALIAS_NAMES = {
         JP: { JP_FormalName: "日本語ワープロ検定", EN_FormalName: "Examination in Japanese Word Processing" },
-        SP: { JP_FormalName: "情報処理技能検定", EN_FormalName: "Examination in Technical Ability of Data Processing (Spreadsheet)" },
-        DP: { JP_FormalName: "情報処理技能検定", EN_FormalName: "Examination in Technical Ability of Data Processing (Database)" },
+        SP: { JP_FormalName: "情報処理技能検定(表計算)", EN_FormalName: "Examination in Technical Ability of Data Processing (Spreadsheet)" },
+        DP: { JP_FormalName: "情報処理技能検定(データベース)", EN_FormalName: "Examination in Technical Ability of Data Processing (Database)" },
         BD: { JP_FormalName: "文書デザイン検定", EN_FormalName: "Examination in Document Design" },
         HP: { JP_FormalName: "ホームページ作成検定", EN_FormalName: "Examination in Homepage Production" },
         PR: { JP_FormalName: "プレゼンテーション作成検定", EN_FormalName: "Examination in Presentation Production" },
@@ -39,6 +39,14 @@ export default class ExaminationType {
         HP: ["First", "Second", "Third", "Fourth"],
         PR: ["First", "Second", "Third", "Fourth"],
     } as const;
+    private readonly ExaminationTypeAndFileExtension = {
+        JP: ["application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/pdf", "text/plain"],
+        SP: ["application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"],
+        DP: null,
+        BD: ["application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/pdf"],
+        HP: null,
+        PR: ["application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation"],
+    }
     /**
      * 指定された試験の級の一覧を提供する
      * @param examination 短縮試験名称
@@ -89,4 +97,9 @@ export default class ExaminationType {
         const convertibleGradeName = ["First", "Second", "Third", "Fourth"];
         return convertibleGradeName[gradeNumber - 1];
     }
+    // * 気が向いたら実装する
+    // getSupportFileExtensionFromExamType(examType): [string] | null {
+    //     this.ExaminationTypeAndFileExtension[examType]
+    //     return [""];
+    // }
 }

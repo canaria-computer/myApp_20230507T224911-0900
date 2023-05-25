@@ -71258,6 +71258,7 @@ const { setExamination, setGrade } = examinationAndGradeInfoSteateSlice.actions;
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "resetPath": () => (/* binding */ resetPath),
 /* harmony export */   "setModelAnswerPath": () => (/* binding */ setModelAnswerPath),
 /* harmony export */   "setOwnAnswerPath": () => (/* binding */ setOwnAnswerPath)
 /* harmony export */ });
@@ -71266,20 +71267,26 @@ __webpack_require__.r(__webpack_exports__);
 const globalFilesAndFolderInfo = {
     ownAnswerPath: "",
     modelAnswerPath: "",
+    uploadFileOrFolderType: null
 };
 const globalFilesAndFolderInfoSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_0__.createSlice)({
     name: "globalFilesAndFolderUpdate",
     initialState: globalFilesAndFolderInfo,
     reducers: {
         setOwnAnswerPath(state, action) {
-            state.ownAnswerPath = action.payload;
+            state.ownAnswerPath = action.payload[0];
+            state.uploadFileOrFolderType = action.payload[1];
         },
         setModelAnswerPath(state, action) {
-            state.modelAnswerPath = action.payload;
+            state.modelAnswerPath = action.payload[0];
+        },
+        resetPath(state) {
+            state.ownAnswerPath = "";
+            state.modelAnswerPath = "";
         }
     }
 });
-const { setOwnAnswerPath, setModelAnswerPath } = globalFilesAndFolderInfoSlice.actions;
+const { setOwnAnswerPath, setModelAnswerPath, resetPath } = globalFilesAndFolderInfoSlice.actions;
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (globalFilesAndFolderInfoSlice.reducer);
 
 
@@ -71683,7 +71690,7 @@ const ownAnswerFileInput = () => {
         if (result !== "") {
             setSelectedPath(result);
             setNextButtonDisable(false);
-            dispatch((0,_Features_FilesAndFolderInfo__WEBPACK_IMPORTED_MODULE_3__.setOwnAnswerPath)(result));
+            dispatch((0,_Features_FilesAndFolderInfo__WEBPACK_IMPORTED_MODULE_3__.setOwnAnswerPath)([result, examAndGradeInfo.examination]));
         }
     };
     // TODO 選択 を変える
@@ -71731,8 +71738,8 @@ class ExaminationType {
     ];
     _ALIAS_NAMES = {
         JP: { JP_FormalName: "日本語ワープロ検定", EN_FormalName: "Examination in Japanese Word Processing" },
-        SP: { JP_FormalName: "情報処理技能検定", EN_FormalName: "Examination in Technical Ability of Data Processing (Spreadsheet)" },
-        DP: { JP_FormalName: "情報処理技能検定", EN_FormalName: "Examination in Technical Ability of Data Processing (Database)" },
+        SP: { JP_FormalName: "情報処理技能検定(表計算)", EN_FormalName: "Examination in Technical Ability of Data Processing (Spreadsheet)" },
+        DP: { JP_FormalName: "情報処理技能検定(データベース)", EN_FormalName: "Examination in Technical Ability of Data Processing (Database)" },
         BD: { JP_FormalName: "文書デザイン検定", EN_FormalName: "Examination in Document Design" },
         HP: { JP_FormalName: "ホームページ作成検定", EN_FormalName: "Examination in Homepage Production" },
         PR: { JP_FormalName: "プレゼンテーション作成検定", EN_FormalName: "Examination in Presentation Production" },
@@ -71756,6 +71763,14 @@ class ExaminationType {
         BD: ["First", "Second", "Third", "Fourth"],
         HP: ["First", "Second", "Third", "Fourth"],
         PR: ["First", "Second", "Third", "Fourth"],
+    };
+    ExaminationTypeAndFileExtension = {
+        JP: ["application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/pdf", "text/plain"],
+        SP: ["application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"],
+        DP: null,
+        BD: ["application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "application/pdf"],
+        HP: null,
+        PR: ["application/vnd.ms-powerpoint", "application/vnd.openxmlformats-officedocument.presentationml.presentation"],
     };
     /**
      * 指定された試験の級の一覧を提供する
@@ -71823,16 +71838,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Typography/Typography.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Grid/Grid.js");
-/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Button/Button.js");
-/* harmony import */ var _mui_icons_material_NavigateNext__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mui/icons-material/NavigateNext */ "./node_modules/@mui/icons-material/NavigateNext.js");
-/* harmony import */ var react_select__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-select */ "./node_modules/react-select/dist/react-select.esm.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Typography/Typography.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Grid/Grid.js");
+/* harmony import */ var _mui_material__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @mui/material */ "./node_modules/@mui/material/Button/Button.js");
+/* harmony import */ var _mui_icons_material_NavigateNext__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @mui/icons-material/NavigateNext */ "./node_modules/@mui/icons-material/NavigateNext.js");
+/* harmony import */ var react_select__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-select */ "./node_modules/react-select/dist/react-select.esm.js");
 /* harmony import */ var _ExaminationType__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ExaminationType */ "./src/web/StartScreen/ExaminationType.tsx");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/dist/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _Features_stepInfo__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Features/stepInfo */ "./src/Features/stepInfo.ts");
 /* harmony import */ var _Features_ExaminationAndGradeInfo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Features/ExaminationAndGradeInfo */ "./src/Features/ExaminationAndGradeInfo.ts");
+/* harmony import */ var _Features_FilesAndFolderInfo__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Features/FilesAndFolderInfo */ "./src/Features/FilesAndFolderInfo.ts");
 
 
 
@@ -71844,11 +71860,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 const examinationTypeOptions = new _ExaminationType__WEBPACK_IMPORTED_MODULE_2__["default"]();
 const Start = () => {
     // store からの情報
     const stepperInfo = (0,react_redux__WEBPACK_IMPORTED_MODULE_3__.useSelector)((state) => state.stepper);
     const examAndGradeInfo = (0,react_redux__WEBPACK_IMPORTED_MODULE_3__.useSelector)((state) => state.examinationGradeInfo);
+    const fileAndFolderInfo = (0,react_redux__WEBPACK_IMPORTED_MODULE_3__.useSelector)((state) => state.FilesAndFolderInfo);
     const [examinationSelected, setExaminationSelected] = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)((() => {
         // 前の状態から戻す
         const searchResult = examinationTypeOptions.EXAMINATION_LIST.filter(element => element.value === examAndGradeInfo.examination);
@@ -71895,6 +71913,10 @@ const Start = () => {
             gradeSclected?.value === undefined || gradeSclected.value === null || gradeSclected.value === "") {
             throw new Error();
         }
+        // 選択済みのファイルがあるときに テストする 検定が変更されていた時
+        if (examAndGradeInfo.examination !== fileAndFolderInfo.uploadFileOrFolderType) {
+            dispatch((0,_Features_FilesAndFolderInfo__WEBPACK_IMPORTED_MODULE_6__.resetPath)());
+        }
         dispatch((0,_Features_ExaminationAndGradeInfo__WEBPACK_IMPORTED_MODULE_5__.setExamination)(examinationSelected.value));
         dispatch((0,_Features_ExaminationAndGradeInfo__WEBPACK_IMPORTED_MODULE_5__.setGrade)(gradeSclected.value));
         dispatch((0,_Features_stepInfo__WEBPACK_IMPORTED_MODULE_4__.stepUp)());
@@ -71926,8 +71948,10 @@ const Start = () => {
         setNextButtonDisable(!(examinationSelected?.value !== null && gradeSclected?.value !== null));
         dispatch((0,_Features_ExaminationAndGradeInfo__WEBPACK_IMPORTED_MODULE_5__.setGrade)(selectedOption.value));
     };
-    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], { component: "h2", variant: "h5", children: "\u63A1\u70B9\u30E2\u30FC\u30C9\u306E\u8A2D\u5B9A" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("label", { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], { children: ["\u63A1\u70B9\u5BFE\u8C61\u306E\u8A66\u9A13\u3092\u9078\u3076", (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], { component: "span", color: "warning.main", children: "(\u5FC5\u9808)" })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], { component: "div", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react_select__WEBPACK_IMPORTED_MODULE_7__["default"], { placeholder: "\u8A66\u9A13\u306E\u540D\u524D", options: examinationTypeOptions.EXAMINATION_LIST, filterOption: examinationTypeOptions.searchFilter, onChange: handleSelectExaminationChange, value: examinationSelected }) })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("label", { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], { component: "div", children: ["\u7D1A\u30FB\u6BB5\u3092\u9078\u3076", (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], { component: "span", color: "warning.main", children: "(\u5FC5\u9808)" })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], { component: "div", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react_select__WEBPACK_IMPORTED_MODULE_7__["default"], { placeholder: "\u9078\u629E...", isDisabled: gradeSclectedDisable, options: gradeOption, value: gradeSclected, isSearchable: false, onChange: handleSelectGradeSclectedChange }) })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_8__["default"], { container: true, justifyContent: "flex-end", sx: { marginTop: 15 }, children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], { component: "span", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], { variant: "contained", startIcon: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_icons_material_NavigateNext__WEBPACK_IMPORTED_MODULE_10__["default"], {}), disabled: nextButtonDisable, component: react_router_dom__WEBPACK_IMPORTED_MODULE_11__.Link, onClick: handleNextButtonClick, to: "/EULA", children: "\u6B21\u306B\u9032\u3080" }) }) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: () => {
-                    console.log(examAndGradeInfo);
+    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], { component: "h2", variant: "h5", children: "\u63A1\u70B9\u30E2\u30FC\u30C9\u306E\u8A2D\u5B9A" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("label", { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], { children: ["\u63A1\u70B9\u5BFE\u8C61\u306E\u8A66\u9A13\u3092\u9078\u3076", (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], { component: "span", color: "warning.main", children: "(\u5FC5\u9808)" })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], { component: "div", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react_select__WEBPACK_IMPORTED_MODULE_8__["default"], { placeholder: "\u8A66\u9A13\u306E\u540D\u524D", options: examinationTypeOptions.EXAMINATION_LIST, filterOption: examinationTypeOptions.searchFilter, onChange: handleSelectExaminationChange, value: examinationSelected }) })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)("label", { children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], { component: "div", children: ["\u7D1A\u30FB\u6BB5\u3092\u9078\u3076", (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], { component: "span", color: "warning.main", children: "(\u5FC5\u9808)" })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], { component: "div", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(react_select__WEBPACK_IMPORTED_MODULE_8__["default"], { placeholder: "\u9078\u629E...", isDisabled: gradeSclectedDisable, options: gradeOption, value: gradeSclected, isSearchable: false, onChange: handleSelectGradeSclectedChange }) })] }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_9__["default"], { container: true, justifyContent: "flex-end", sx: { marginTop: 15 }, children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], { component: "span", children: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_10__["default"], { variant: "contained", startIcon: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_icons_material_NavigateNext__WEBPACK_IMPORTED_MODULE_11__["default"], {}), disabled: nextButtonDisable, component: react_router_dom__WEBPACK_IMPORTED_MODULE_12__.Link, onClick: handleNextButtonClick, to: "/EULA", children: "\u6B21\u306B\u9032\u3080" }) }) }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)("button", { onClick: () => {
+                    // console.log(examAndGradeInfo);
+                    // console.log(examinationSelected);
+                    console.log(fileAndFolderInfo);
                 }, children: "debug" })] }));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Start);

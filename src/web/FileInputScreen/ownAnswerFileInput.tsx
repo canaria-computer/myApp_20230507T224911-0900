@@ -23,13 +23,13 @@ const ownAnswerFileInput: React.FC = () => {
         // @ts-ignore
         const result = await window.FileAndFolderSelect.openDialog(
             examAndGradeInfo.examination === "HP" ? "Dir" : "File"
-        );
+        ) as string;
         console.log(result);
 
         if (result !== "") {
             setSelectedPath(result);
             setNextButtonDisable(false);
-            dispatch(setOwnAnswerPath(result))
+            dispatch(setOwnAnswerPath([result, examAndGradeInfo.examination]))
         }
 
     }
