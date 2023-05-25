@@ -21,15 +21,17 @@ app.whenReady().then(() => {
   const myMenu = new MyMenu(mainWindow);
   myMenu.createMenu();
 
-  ipcMain.handle('FileAndFolderSelect', async (event, arg) => {
+  ipcMain.handle("FileAndFolderSelect", async (_, uploadType: "File" | "Dir") => {
     return dialog
       .showOpenDialog(mainWindow, {
-        properties: ['openDirectory'],
+        properties: [
+          ((uploadType === "File") ? "openFile" : "openDirectory")
+        ],
         // buttonLabel: ""
-        defaultPath: app.getPath('desktop')
+        defaultPath: app.getPath("desktop")
       })
       .then((result) => {
-        if (result.canceled) return '';
+        if (result.canceled) return "";
         return result.filePaths[0];
       });
   });

@@ -146,6 +146,9 @@ const Start = () => {
                         to="/EULA">次に進む</Button>
                 </Typography>
             </Grid>
+            <button onClick={() => {
+                console.log(examAndGradeInfo);
+            }}>debug</button>
         </>
     )
 };

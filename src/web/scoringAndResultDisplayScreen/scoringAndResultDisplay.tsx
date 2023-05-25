@@ -1,4 +1,4 @@
-import { Box, CircularProgress, LinearProgress, Typography } from '@mui/material';
+import { Backdrop, Box, Button, CircularProgress, LinearProgress, Typography } from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
@@ -28,6 +28,13 @@ const scoringAndResultDisplay = () => {
 const ScoringNow = () => {
     return (
         <>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={true}
+                onClick={() => { }}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop >
             <Box sx={{ width: '100%' }}><LinearProgress /></Box>
             <Typography component="h2" variant="h5">採点中</Typography>
         </>

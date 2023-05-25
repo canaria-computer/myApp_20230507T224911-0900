@@ -95,7 +95,7 @@ console.log("preloaded!");
 // main 以外から呼び出す window に含まれる オブジェクト名
 electron__WEBPACK_IMPORTED_MODULE_0__.contextBridge.exposeInMainWorld("FileAndFolderSelect", {
     // exposeInMainWorld(`word`) の オブジェクト
-    openDialog: () => electron__WEBPACK_IMPORTED_MODULE_0__.ipcRenderer.invoke("FileAndFolderSelect"),
+    openDialog: (uploadType) => electron__WEBPACK_IMPORTED_MODULE_0__.ipcRenderer.invoke("FileAndFolderSelect", uploadType),
     // 関数の登録
 });
 electron__WEBPACK_IMPORTED_MODULE_0__.contextBridge.exposeInMainWorld("NavigationOperator", {

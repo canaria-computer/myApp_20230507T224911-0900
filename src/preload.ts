@@ -6,7 +6,7 @@ import { ipcRenderer, contextBridge } from 'electron'
 // main 以外から呼び出す window に含まれる オブジェクト名
 contextBridge.exposeInMainWorld("FileAndFolderSelect", {// チャンネル名
     // exposeInMainWorld(`word`) の オブジェクト
-    openDialog: () => ipcRenderer.invoke("FileAndFolderSelect"),
+    openDialog: (uploadType: "File" | "Dir") => ipcRenderer.invoke("FileAndFolderSelect", uploadType),
     // 関数の登録
 });
 

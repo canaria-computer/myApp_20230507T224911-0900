@@ -209,15 +209,17 @@ electron__WEBPACK_IMPORTED_MODULE_1__.app.whenReady().then(() => {
     webFrame.openDevTools({ mode: "right" });
     const myMenu = new _my_menu__WEBPACK_IMPORTED_MODULE_2__.MyMenu(mainWindow);
     myMenu.createMenu();
-    electron__WEBPACK_IMPORTED_MODULE_1__.ipcMain.handle('FileAndFolderSelect', async (event, arg) => {
+    electron__WEBPACK_IMPORTED_MODULE_1__.ipcMain.handle("FileAndFolderSelect", async (_, uploadType) => {
         return electron__WEBPACK_IMPORTED_MODULE_1__.dialog.showOpenDialog(mainWindow, {
-            properties: ['openDirectory'],
+            properties: [
+                ((uploadType === "File") ? "openFile" : "openDirectory")
+            ],
             // buttonLabel: ""
-            defaultPath: electron__WEBPACK_IMPORTED_MODULE_1__.app.getPath('desktop')
+            defaultPath: electron__WEBPACK_IMPORTED_MODULE_1__.app.getPath("desktop")
         })
             .then((result) => {
             if (result.canceled)
-                return '';
+                return "";
             return result.filePaths[0];
         });
     });

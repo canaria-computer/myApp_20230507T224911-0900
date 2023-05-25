@@ -425,7 +425,7 @@ export default class HomepageProducitonScoring {
             const examPersonDataField = root.querySelector("body > p")?.textContent;
             if (examPersonDataField !== undefined) {
                 // 名前を取り出す
-                const name = this.extractFullName(examPersonDataField)
+                const name = this.extractFullName(examPersonDataField);
                 if (name !== null) {
                     // 失敗しなかったとき
                     result.indexHtml = name;
@@ -434,6 +434,7 @@ export default class HomepageProducitonScoring {
                 }
             }
         }
+        console.log(result.indexHtml);
         // 優先順位に従って結果を返す
         if (result.folder !== result.indexHtml && (priorityValue === undefined || priorityValue === "indexHtml")) {
             return result.indexHtml;
@@ -449,9 +450,13 @@ export default class HomepageProducitonScoring {
      */
     calScore(): number {
         const maxScore = 100;
-        const sum = this.inspectionDataArray.filter(element => element[1]).reduce((acc, element) => acc + element[2], 0);
-        // ! TODO [File Error] --> 途中の処理を行わない
-        return 100 - sum + 1;// test データ のため 1点追加
+        // 致命的な 欠損により判定できないとき
+        if (this.inspectionDataArray.map(data => data[0].startsWith("[File Error]")).includes(true)) {
+            return -Infinity
+        } else {
+            const sum = this.inspectionDataArray.filter(element => element[1]).reduce((acc, element) => acc + element[2], 0);
+            return 100 - sum + 1;// test データ のため 1点追加
+        }
     }
     /**
      * 読み取り専用 ハッシュ値の検証に失敗したファイル名のリスト 
@@ -574,8 +579,9 @@ type ExaminationTakerName = {
 // ! TSET only --->
 console.log("\n".repeat(5));
 // TODO del
-const testOwnAnsDir = `C:/Users/mr-ak/Desktop/日検sanple/HP1_9999_受験者氏名`
-const testModelAnsDir = `C:/Users/mr-ak/Desktop/日検sanple/HP_84_A/HP1_受験番号_名前`
+// const testOwnAnsDir = `C:/Users/mr-ak/Desktop/日検sanple/HP1_9999_受験者氏名`;
+const testOwnAnsDir = `C:/Users/mr-ak/Desktop/日検sanple/HP1_0000_完璧太郎`;
+const testModelAnsDir = `C:/Users/mr-ak/Desktop/日検sanple/HP_84_A/HP1_受験番号_名前`;
 
 const instant = new HomepageProducitonScoring(testOwnAnsDir, testModelAnsDir);
 console.log("ハッシュ値の検証に失敗したファイル", instant.failedComparHashValue);

@@ -9,6 +9,7 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import { stepDown, stepUp } from "../../Features/stepInfo";
+import HomePageBuildingInfo from "./homePageBuildingInfo";
 
 
 const ownAnswerFileInput: React.FC = () => {
@@ -20,11 +21,13 @@ const ownAnswerFileInput: React.FC = () => {
 
     const handleSelectFileButtonClick = async () => {
         // @ts-ignore
-        const result = await window.FileAndFolderSelect.openDialog();
+        const result = await window.FileAndFolderSelect.openDialog(
+            examAndGradeInfo.examination === "HP" ? "Dir" : "File"
+        );
         console.log(result);
-        setSelectedPath(result)
 
         if (result !== "") {
+            setSelectedPath(result);
             setNextButtonDisable(false);
             dispatch(setOwnAnswerPath(result))
         }
@@ -39,12 +42,7 @@ const ownAnswerFileInput: React.FC = () => {
             </Typography>
 
             {   //* HP の人には 情報を追加で提供
-                examAndGradeInfo.examination === "HP" &&
-                <Alert severity="info" sx={{ margin: 1 }}>
-                    <AlertTitle>info : [参考情報]</AlertTitle>
-                    ホームページ作成検定は フォルダごと調べるため
-                    <strong>index.html</strong>が存在するフォルダを選択する必要があります。
-                </Alert>
+                examAndGradeInfo.examination === "HP" && <HomePageBuildingInfo />
             }
 
             <Typography component="div" sx={{ marginBottom: 5 }}>
@@ -81,6 +79,9 @@ const ownAnswerFileInput: React.FC = () => {
                         dispatch(stepUp())
                     }}>次へ進む</Button>
             </Grid>
+            <button onClick={() => {
+                console.log(fileAndFolderInfo)
+            }}>debug</button>
         </Box >
     )
 }
