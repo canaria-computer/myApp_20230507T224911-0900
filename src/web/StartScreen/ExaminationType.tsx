@@ -6,7 +6,7 @@ export default class ExaminationType {
         { value: "DP", isDisabled: true, label: "情報処理技能検定(データベース)", },
         { value: "BD", isDisabled: true, label: "文書デザイン検定", },
         { value: "HP", isDisabled: false, label: "ホームページ作成検定", },
-        { value: "PR", isDisabled: false, label: "プレゼンテーション作成検定", },
+        { value: "PR", isDisabled: true, label: "プレゼンテーション作成検定", },
     ] as const;
 
     private readonly _ALIAS_NAMES = {

@@ -62,7 +62,7 @@ const scoringAndResultDisplay = () => {
 
 
     return (
-        <Box sx={{ mx: 2 }}>
+        <Box sx={{ mt: 2, mb: 5, mx: 2 }}>
             {isScoringNow ? <ScoringNow /> : <ShowResult {...fetchScoringResult} />}
 
             {!isScoringNow &&

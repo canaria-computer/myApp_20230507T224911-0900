@@ -73697,7 +73697,7 @@ class ExaminationType {
         { value: "DP", isDisabled: true, label: "情報処理技能検定(データベース)", },
         { value: "BD", isDisabled: true, label: "文書デザイン検定", },
         { value: "HP", isDisabled: false, label: "ホームページ作成検定", },
-        { value: "PR", isDisabled: false, label: "プレゼンテーション作成検定", },
+        { value: "PR", isDisabled: true, label: "プレゼンテーション作成検定", },
     ];
     _ALIAS_NAMES = {
         JP: { JP_FormalName: "日本語ワープロ検定", EN_FormalName: "Examination in Japanese Word Processing" },
@@ -74014,7 +74014,7 @@ const scoringAndResultDisplay = () => {
         dispatch((0,_Features_stepInfo__WEBPACK_IMPORTED_MODULE_3__.setStep)(0));
         dispatch((0,_Features_FilesAndFolderInfo__WEBPACK_IMPORTED_MODULE_4__.resetPath)());
     };
-    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], { sx: { mx: 2 }, children: [isScoringNow ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(ScoringNow, {}) : (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(ShowResult, { ...fetchScoringResult }), !isScoringNow &&
+    return ((0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_5__["default"], { sx: { mt: 2, mb: 5, mx: 2 }, children: [isScoringNow ? (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(ScoringNow, {}) : (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(ShowResult, { ...fetchScoringResult }), !isScoringNow &&
                 (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_mui_material__WEBPACK_IMPORTED_MODULE_6__["default"], { container: true, justifyContent: "space-between", sx: { marginTop: 2 }, children: [(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], { variant: "outlined", startIcon: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_icons_material_Home__WEBPACK_IMPORTED_MODULE_8__["default"], {}), component: react_router_dom__WEBPACK_IMPORTED_MODULE_9__.Link, to: "/", onClick: handleGoHomeButtonClick, children: "\u6700\u521D\u306E\u753B\u9762\u306B\u623B\u308B" }), (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_material__WEBPACK_IMPORTED_MODULE_7__["default"], { variant: "outlined", endIcon: (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx)(_mui_icons_material_ExitToApp__WEBPACK_IMPORTED_MODULE_10__["default"], {}), disabled: false, onClick: handleExitButtonClick, children: "\u30A2\u30D7\u30EA\u3092\u7D42\u4E86" })] })] }));
 };
 const ScoringNow = () => {
