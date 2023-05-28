@@ -18,7 +18,7 @@ app.whenReady().then(() => {
 
   const webFrame = mainWindow.webContents;
   mainWindow.loadFile("dist/index.html");
-  webFrame.openDevTools({ mode: "right" });
+  // webFrame.openDevTools({ mode: "right" });
 
   const myMenu = new MyMenu(mainWindow);
   myMenu.createMenu();
