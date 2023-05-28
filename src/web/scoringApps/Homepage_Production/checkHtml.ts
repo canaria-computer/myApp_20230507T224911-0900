@@ -1,6 +1,6 @@
-import { HTMLElement, parse as parseHtml } from 'node-html-parser';
-import DiffMatchPatch, { diff_match_patch } from 'diff-match-patch';
-import _ from 'lodash';
+import { HTMLElement, parse as parseHtml } from "node-html-parser";
+import DiffMatchPatch, { diff_match_patch } from "diff-match-patch";
+import _ from "lodash";
 
 /**
  * 

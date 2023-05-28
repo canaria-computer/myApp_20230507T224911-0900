@@ -91,6 +91,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var electron__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(electron__WEBPACK_IMPORTED_MODULE_0__);
 console.log("preloaded!");
 
+const sleep = (ms) => new Promise(res => setTimeout(res, ms));
 // IPC メッセージ(のチャンネル) 登録
 // main 以外から呼び出す window に含まれる オブジェクト名
 electron__WEBPACK_IMPORTED_MODULE_0__.contextBridge.exposeInMainWorld("FileAndFolderSelect", {
@@ -105,6 +106,18 @@ electron__WEBPACK_IMPORTED_MODULE_0__.contextBridge.exposeInMainWorld("scoringAp
     test: async (arg) => {
         const result = await electron__WEBPACK_IMPORTED_MODULE_0__.ipcRenderer.invoke("scoringApps", arg);
         console.log(arg, result, "[preload]");
+    },
+    scoreringInstantiation: async (ownAnsPath, modelAnsPath) => {
+        const result = await electron__WEBPACK_IMPORTED_MODULE_0__.ipcRenderer.invoke("scoringApps", ownAnsPath, modelAnsPath);
+        // await sleep(1000 * (Math.random() * (10 - 0 + 1) + 0)); // TODO 調整
+        // await sleep(1000 * 10); // TODO 調整
+        await sleep(1000 * 1); // TODO 調整
+        return result;
+    }
+});
+electron__WEBPACK_IMPORTED_MODULE_0__.contextBridge.exposeInMainWorld("appExit", {
+    exit: async () => {
+        await electron__WEBPACK_IMPORTED_MODULE_0__.ipcRenderer.invoke("appExit");
     }
 });
 

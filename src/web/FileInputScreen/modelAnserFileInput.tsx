@@ -3,11 +3,11 @@ import { Link as RouterLink } from "react-router-dom";
 import { RootState } from "..";
 import { useDispatch, useSelector } from "react-redux";
 import { setModelAnswerPath } from "../../Features/FilesAndFolderInfo";
-import { Alert, AlertTitle, Box, Button, Grid, Typography } from "@mui/material";
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import { Box, Button, Grid, Typography } from "@mui/material";
+import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { stepDown, stepUp } from "../../Features/stepInfo";
 import HomePageBuildingInfo from "./homePageBuildingInfo";
 
@@ -62,7 +62,7 @@ const modelAnswerFileInput: React.FC = () => {
             {/* //!  ファイル フォルダ 切り替えをする */}
             <Grid container justifyContent="space-between" sx={{ margin: 2, flexWrap: "wrap-reverse", padding: "0 20px" }}>
 
-                <Button variant="outlined" startIcon={<NavigateBeforeIcon />} component={RouterLink} to='/ownAnswerFileInputScreen' onClick={() => {
+                <Button variant="outlined" startIcon={<NavigateBeforeIcon />} component={RouterLink} to="/ownAnswerFileInputScreen" onClick={() => {
                     dispatch(stepDown());
                     // @ts-ignore
                     window.NavigationOperator.goBack();
@@ -70,7 +70,7 @@ const modelAnswerFileInput: React.FC = () => {
 
                 <Button variant="contained"
                     endIcon={<NavigateNextIcon />}
-                    component={RouterLink} to='/scoringAndResultDisplayScreen' disabled={nextButtonDisable} onClick={() => {
+                    component={RouterLink} to="/scoringAndResultDisplayScreen" disabled={nextButtonDisable} onClick={() => {
                         dispatch(stepUp())
                     }}>採点を開始</Button>
             </Grid>

@@ -1,4 +1,5 @@
 import fs from "fs";
+import stylelint from 'stylelint';
 import path from "node:path";
 import Encoding from 'encoding-japanese';
 import _ from "lodash";
@@ -166,71 +167,6 @@ export default class HomepageProducitonScoring {
     }
 
     private htmlDiff(ownAnsHtmlPath: string, modelAnsHtmlPath: string) {
-        // function removeDoctype(s: string) {
-        //     // html2json のバグによる手動訂正
-        //     return s.replace(/<?xml. ?>\n/igm, '').replace(/<!doctype. >\n/igm, '').replace(/<!DOCTYPE.* >\n/igm, '').replace(/<!DOCTYPE.*>\n?/igm, '')
-        // }
-        // const ownAnsHtmlUTF8Text = removeDoctype(this.decodeIfNotUtf8Sync(ownAnsHtmlPath));
-        // const modelAnsHtmlUTF8Text = removeDoctype(this.decodeIfNotUtf8Sync(modelAnsHtmlPath));
-        // // html text 解析情報
-        // let [ownAnsHtmlText, modelAnsHtmlText] = [html2json(ownAnsHtmlUTF8Text), html2json(modelAnsHtmlUTF8Text)];
-        // function removeWhitespace(obj: any): any {
-        //     if (_.isArray(obj)) {
-        //         return obj.map(removeWhitespace).filter(Boolean);
-        //     } else if (_.isObject(obj)) {
-        //         const result: any = {};
-        //         for (const [key, value] of Object.entries(obj)) {
-        //             if (key === "text" && typeof value === "string") {
-        //                 const trimmedValue = value.trim();
-        //                 if (/^\s*$/.test(trimmedValue)) {
-        //                     return undefined;
-        //                 }
-        //                 result[key] = trimmedValue;
-        //             } else {
-        //                 const newValue = removeWhitespace(value);
-        //                 if (newValue !== undefined) {
-        //                     result[key] = newValue;
-        //                 }
-        //             }
-        //         }
-        //         return _.isEmpty(result) ? undefined : result;
-        //     } else {
-        //         return obj;
-        //     }
-        // }
-
-        // function removeComment(obj: any): any {
-        //     if (_.isArray(obj)) {
-        //         return obj.map((item) => removeComment(item)).filter(Boolean);
-        //     }
-
-        //     if (_.isObject(obj)) {
-        //         // @ts-ignore
-        //         const { node, ...rest } = obj;
-
-        //         if (node === 'comment') {
-        //             return undefined;
-        //         }
-
-        //         const updatedObj = { node, ...rest };
-        //         for (const key in updatedObj) {
-        //             // @ts-ignore
-        //             updatedObj[key] = removeComment(updatedObj[key]);
-        //         }
-
-        //         return _.isEmpty(updatedObj) ? undefined : updatedObj;
-        //     }
-
-        //     return obj;
-        // }
-        // ownAnsHtmlText = removeWhitespace(ownAnsHtmlText);
-        // modelAnsHtmlText = removeWhitespace(modelAnsHtmlText);
-        // ownAnsHtmlText = removeComment(ownAnsHtmlText);
-        // modelAnsHtmlText = removeComment(modelAnsHtmlText);
-        // // 変数代入割り当て
-        // this.ownAnsIndexHtml.utf8Data = ownAnsHtmlText;
-        // this.modelAnsIndexHtml.utf8Data = modelAnsHtmlText;
-
         const fileName = ownAnsHtmlPath.slice(ownAnsHtmlPath.lastIndexOf("/") + 1)
         const ownAnsHtmlUtf8Data = this.convertHTMLTagsToLowerCase(this.decodeIfNotUtf8Sync(ownAnsHtmlPath));
         const modelAnsHtmlUtf8Data = this.convertHTMLTagsToLowerCase(this.decodeIfNotUtf8Sync(modelAnsHtmlPath));
@@ -355,7 +291,6 @@ export default class HomepageProducitonScoring {
                 }
                 // class
                 if (!_.isEqual(ownElement.classNames.split(" "), modelElement.classNames.split(" "))) {
-                    console.log((ownElement.classNames.split(" ")), (modelElement.classNames.split(" ")));
                     this.inspectionDataArray.push([`${fileName}:クラスリストの誤り\nセレクタ${OwnAnsSelector}`, true, 5])
                 }
                 // if (this.compareAttributes(ownElement, modelElement)) {
@@ -368,7 +303,62 @@ export default class HomepageProducitonScoring {
 
     }
     private cssDiff(ownAnsCssPath: string, modelAnsCssPath: string) {
-        console.log(ownAnsCssPath, modelAnsCssPath);
+        const ownAnsCSStext = this.decodeIfNotUtf8Sync(ownAnsCssPath);
+        const modelAnsCSStext = this.decodeIfNotUtf8Sync(modelAnsCssPath);
+
+        // CSSテキストを比較し、異なる設定を探す関数
+        async function compareStyles(text1: string, text2: string): Promise<string[]> {
+            // stylelintの設定
+            const stylelintConfig = {
+                rules: {
+                    'color-format/format': [true, { format: 'rgb' }],
+                },
+            };
+
+            // text1を検証
+            const { errored, output: output1 } = await stylelint.lint({
+                code: text1,
+                config: stylelintConfig,
+                fix: true,
+            });
+
+            // text2を検証
+            const { output: output2 } = await stylelint.lint({
+                code: text2,
+                config: stylelintConfig,
+                fix: true,
+            });
+
+            // 自動修正結果を比較
+            const diff = _.difference(output2?.split('\n'), output1?.split('\n'));
+
+            // 異なる設定を格納する配列
+            const differentSelectors: string[] = [];
+
+            // 異なる設定を配列に追加
+            diff.forEach((line: any) => {
+                const selectorMatch = line.match(/(\.[a-zA-Z0-9_-]+)/);
+                if (selectorMatch) {
+                    differentSelectors.push(selectorMatch[1]);
+                }
+            });
+
+            return differentSelectors;
+        }
+
+        compareStyles(ownAnsCSStext, modelAnsCSStext)
+            .then((differentSelectors) => {
+                console.log(differentSelectors);
+                let demeritPoints = differentSelectors.length * 5;
+                if (demeritPoints >= 20) {
+                    demeritPoints = 20;
+                }
+                if (0 < demeritPoints && demeritPoints <= 5) {
+                    demeritPoints = 10;
+                }
+                this.inspectionDataArray.push(["CSSファイルの誤り", true, demeritPoints]);
+            })
+            .catch(console.error);
     }
     /**
      * 受験級を取得する関数
@@ -434,7 +424,6 @@ export default class HomepageProducitonScoring {
                 }
             }
         }
-        console.log(result.indexHtml);
         // 優先順位に従って結果を返す
         if (result.folder !== result.indexHtml && (priorityValue === undefined || priorityValue === "indexHtml")) {
             return result.indexHtml;
@@ -455,7 +444,7 @@ export default class HomepageProducitonScoring {
             return -Infinity
         } else {
             const sum = this.inspectionDataArray.filter(element => element[1]).reduce((acc, element) => acc + element[2], 0);
-            return 100 - sum + 1;// test データ のため 1点追加
+            return maxScore - sum + 1;// test データ のため 1点追加
         }
     }
     /**
@@ -563,7 +552,6 @@ export default class HomepageProducitonScoring {
     private compareAttributes(element1: HTMLElement, element2: HTMLElement): boolean {
         const attributes1 = _.keys(element1.attributes).filter(key => key !== "id" && key !== "class" && key !== "href" && key !== "border" && !(key.startsWith("data-")));
         const attributes2 = _.keys(element2.attributes).filter(key => key !== "id" && key !== "class" && key !== "href" && key !== "border" && !(key.startsWith("data-")));
-        console.log(attributes1, attributes2);
         return attributes1.length === attributes2.length &&
             attributes1.every(key => element1.getAttribute(key) === element2.getAttribute(key));
     }
@@ -575,23 +563,3 @@ type ExaminationTakerName = {
     indexHtml: string | null,
     folder: string | null,
 }
-
-// ! TSET only --->
-console.log("\n".repeat(5));
-// TODO del
-// const testOwnAnsDir = `C:/Users/mr-ak/Desktop/日検sanple/HP1_9999_受験者氏名`;
-const testOwnAnsDir = `C:/Users/mr-ak/Desktop/日検sanple/HP1_0000_完璧太郎`;
-const testModelAnsDir = `C:/Users/mr-ak/Desktop/日検sanple/HP_84_A/HP1_受験番号_名前`;
-
-const instant = new HomepageProducitonScoring(testOwnAnsDir, testModelAnsDir);
-console.log("ハッシュ値の検証に失敗したファイル", instant.failedComparHashValue);
-console.log("想定外のサブディレクトリ[解答]", instant.hasOwnSubDirExists);
-console.log("想定外のサブディレクトリ[模範解答]", instant.hasModelSubDirExists);
-console.log("受験者氏名", instant.getExaminationTakerName());
-console.log("ログ", instant.inspectionDataArray);
-console.log("点数", instant.calScore());
-
-console.log("\n".repeat(3));
-
-// ! <---
-

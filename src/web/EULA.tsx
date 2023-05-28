@@ -1,11 +1,11 @@
-import { Button, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import { Button, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import { Link as RouterLink } from "react-router-dom";
-import React from 'react'
-import { useDispatch } from 'react-redux';
-import { stepDown, stepUp } from '../Features/stepInfo';
-import Grid from '@mui/material/Unstable_Grid2';
+import React from "react"
+import { useDispatch } from "react-redux";
+import { stepDown, stepUp } from "../Features/stepInfo";
+import Grid from "@mui/material/Unstable_Grid2";
 
 const allowPattern = {
     allow: "\u{2714} 許可",
@@ -90,14 +90,14 @@ const EULA: React.FC = () => {
                 暗号化を実装し個人情報を保護します。ただし、これはベストエフォートで提供され機密性を保証しません。また、利用者は、個人情報を積極的に送信するべきではありません。(例:パスワードなど)
             </Typography>
             <Grid container justifyContent="space-between" sx={{ margin: 2 }}>
-                <Button variant="outlined" startIcon={<NavigateBeforeIcon />} component={RouterLink} to='/' onClick={() => {
+                <Button variant="outlined" startIcon={<NavigateBeforeIcon />} component={RouterLink} to="/" onClick={() => {
                     dispatch(stepDown());
                     // @ts-ignore
                     window.NavigationOperator.goBack();
                 }}>戻る</Button>
                 <Button variant="contained"
                     endIcon={<NavigateNextIcon />}
-                    component={RouterLink} to='/ownAnswerFileInputScreen' onClick={() => {
+                    component={RouterLink} to="/ownAnswerFileInputScreen" onClick={() => {
                         dispatch(stepUp())
                     }}>EULAに同意して進む</Button>
             </Grid>

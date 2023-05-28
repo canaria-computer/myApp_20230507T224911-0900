@@ -17,11 +17,12 @@ const globalFilesAndFolderInfoSlice = createSlice({
     initialState: globalFilesAndFolderInfo,
     reducers: {
         setOwnAnswerPath(state, action: PayloadAction<[string, typeof ExaminationType.prototype.EXAMINATION_LIST[number]["value"] | null]>) {
+            // 自分の回答の時に どの種類のデータをアップロードしたか記録するために配列を使う
             state.ownAnswerPath = action.payload[0];
             state.uploadFileOrFolderType = action.payload[1];
         },
-        setModelAnswerPath(state, action: PayloadAction<[string, typeof ExaminationType.prototype.EXAMINATION_LIST[number]["value"] | null]>) {
-            state.modelAnswerPath = action.payload[0];
+        setModelAnswerPath(state, action: PayloadAction<string>) {
+            state.modelAnswerPath = action.payload;
         },
         resetPath(state) {
             state.ownAnswerPath = "";

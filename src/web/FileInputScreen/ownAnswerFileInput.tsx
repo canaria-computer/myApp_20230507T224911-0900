@@ -3,11 +3,11 @@ import { Link as RouterLink } from "react-router-dom";
 import { RootState } from "..";
 import { useDispatch, useSelector } from "react-redux";
 import { setOwnAnswerPath } from "../../Features/FilesAndFolderInfo";
-import { Alert, AlertTitle, Box, Button, Grid, Typography } from "@mui/material";
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
+import { Box, Button, Grid, Typography } from "@mui/material";
+import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import UploadFileIcon from "@mui/icons-material/UploadFile";
 import { stepDown, stepUp } from "../../Features/stepInfo";
 import HomePageBuildingInfo from "./homePageBuildingInfo";
 
@@ -65,7 +65,7 @@ const ownAnswerFileInput: React.FC = () => {
 
             <Grid container justifyContent="space-between" sx={{ margin: 2, flexWrap: "wrap-reverse", padding: "0 20px" }}>
 
-                <Button variant="outlined" startIcon={<NavigateBeforeIcon />} component={RouterLink} to='/EULA' onClick={() => {
+                <Button variant="outlined" startIcon={<NavigateBeforeIcon />} component={RouterLink} to="/EULA" onClick={() => {
                     dispatch(stepDown());
                     // @ts-ignore
                     window.NavigationOperator.goBack();
@@ -73,15 +73,12 @@ const ownAnswerFileInput: React.FC = () => {
 
                 <Button variant="contained"
                     endIcon={<NavigateNextIcon />}
-                    component={RouterLink} to='/modelAnswerFileInputScreen'
+                    component={RouterLink} to="/modelAnswerFileInputScreen"
                     disabled={nextButtonDisable}
                     onClick={() => {
                         dispatch(stepUp())
                     }}>次へ進む</Button>
             </Grid>
-            <button onClick={() => {
-                console.log(fileAndFolderInfo)
-            }}>debug</button>
         </Box >
     )
 }

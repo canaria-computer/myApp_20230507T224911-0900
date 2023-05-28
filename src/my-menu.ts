@@ -12,20 +12,9 @@ export class MyMenu {
     createMenu(): void {
         const template: Electron.MenuItemConstructorOptions[] = [
             {
-                label: "ファイル",
+                label: "window",
                 submenu: [
-                    { role: 'close', label: 'ウィンドウを閉じる' }
-                ]
-            },
-            {
-                label: "編集",
-                submenu: [
-                    { role: 'undo', label: '元に戻す' },
-                    { role: 'redo', label: 'やり直す' },
-                    { type: 'separator' },
-                    { role: 'cut', label: '切り取り' },
-                    { role: 'copy', label: 'コピー' },
-                    { role: 'paste', label: '貼り付け' },
+                    { role: "close", label: "ウィンドウを閉じる" }
                 ]
             },
             {
@@ -56,20 +45,6 @@ export class MyMenu {
                     },
                 ],
             },
-            {
-                label: "前に戻る",
-                accelerator: "Alt+Left",
-                click: () => {
-                    this.mainWindow.webContents.goBack();
-                }
-            },
-            {
-                label: "次に進める",
-                accelerator: "Alt+Right",
-                click: () => {
-                    this.mainWindow.webContents.goBack();
-                }
-            }
         ];
         const menu = Menu.buildFromTemplate(template);
         Menu.setApplicationMenu(menu);

@@ -1,10 +1,12 @@
 import path from "path";
 import { BrowserWindow, app, dialog, ipcMain } from "electron";
 import { MyMenu } from "./my-menu";
+import HomepageProducitonScoring from "./web/scoringApps/Homepage_Production/main";
 
 app.whenReady().then(() => {
   const mainWindow = new BrowserWindow({
     width: 1250,
+    icon: "src/components/icon/logo.png",
     webPreferences: {
       preload: path.resolve(__dirname, "preload.js"),
       nodeIntegration: false, //false is secure
@@ -39,10 +41,34 @@ app.whenReady().then(() => {
     webFrame.goBack();
   })
   // 採点システム呼び出しAPIを定義
-  ipcMain.handle("scoringApps", (_event, arg) => {
+  ipcMain.handle("scoringApps", (_, ownAnsPath: string, modelAnsPath: string) => {
     // バックエンド
-    console.log(typeof arg, arg);
-    return { message: "test" };
+    console.log("[main]", ownAnsPath, modelAnsPath);
+    // todo エラー補足必要
+    // todo 結果などを成形して送り出す
+    const instant = new HomepageProducitonScoring(ownAnsPath, modelAnsPath);
+    const result = {
+      score: instant.calScore(),
+      failedComparHashValue: instant.failedComparHashValue,
+      examinationTakerName: instant.getExaminationTakerName(),
+      inspectionDataArray: instant.inspectionDataArray,
+    }
+    return result;
+  })
+  ipcMain.handle("appExit", async () => {
+    const buttons = ["終了する", "終了しない(キャンセル)"]
+    const res = await dialog.showMessageBox(mainWindow, {
+      message: "アプリケーションを終了しますか。",
+      type: "question",
+      buttons: buttons,
+      defaultId: 1,
+      cancelId: 1,
+      title: "終了確認",
+    })
+    const index = res.response
+    if (index === 0) {
+      app.exit();
+    }
   })
 });
 app.once("window-all-closed", () => app.quit());

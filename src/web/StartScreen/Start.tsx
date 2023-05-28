@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button, Grid, Typography } from "@mui/material";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import Select from "react-select";
@@ -7,7 +7,7 @@ import ExaminationType from "./ExaminationType";
 import { Link as RouterLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "..";
-import { stepUp } from "../../Features/stepInfo";
+import { setStep, stepUp } from "../../Features/stepInfo";
 import { setExamination, setGrade } from "../../Features/ExaminationAndGradeInfo";
 import { resetPath } from "../../Features/FilesAndFolderInfo";
 
@@ -21,6 +21,13 @@ const Start = () => {
     const stepperInfo = useSelector((state: RootState) => state.stepper);
     const examAndGradeInfo = useSelector((state: RootState) => state.examinationGradeInfo);
     const fileAndFolderInfo = useSelector((state: RootState) => state.FilesAndFolderInfo);
+
+    // stepperInfo のチェック
+    useEffect(() => {
+        if (stepperInfo.activeStep !== 0) {
+            dispatch(setStep(0));
+        }
+    }, [])
 
     const [examinationSelected, setExaminationSelected] = useState<ExaminationSelectedType | null>((() => {
         // 前の状態から戻す
@@ -153,11 +160,6 @@ const Start = () => {
                         to="/EULA">次に進む</Button>
                 </Typography>
             </Grid>
-            <button onClick={() => {
-                // console.log(examAndGradeInfo);
-                // console.log(examinationSelected);
-                console.log(fileAndFolderInfo);
-            }}>debug</button>
         </>
     )
 };
