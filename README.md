@@ -9,9 +9,9 @@
 
 過去問による対策にお役立てください。
 
-## ニチケンテスター は開発中
+## ニチケンテスター は アルファ版をプレリリース
 
-開発状況についてはここに書いています。
+[プレリリース version0.1.0 ページ](https://github.com/canaria-computer/nitiken_tester/releases/tag/version0.1.0)
 
 2023年5月28日現在 開発途中です。
 

@@ -13,8 +13,13 @@
   "author": {
     "name": "mr-ak"
   },
-  "main": "dist/main.js",
+  "main": "dist\\main.js",
   "build": {
+    "files": [
+      "!dist/*",
+      "!out/*",
+      "!README.md"
+    ],
     "mac": {
       "icon": "src\\components\\icon\\icon.png"
     },
