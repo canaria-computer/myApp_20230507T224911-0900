@@ -9,9 +9,11 @@
 
 過去問による対策にお役立てください。
 
-## ニチケンテスター は アルファ版をプレリリース
+## ニチケンテスター は アルファ版をリリース
 
-[プレリリース version0.1.0 ページ](https://github.com/canaria-computer/nitiken_tester/releases/tag/version0.1.0)
+[リリース version0.1.0 アルファ版 ページ](https://github.com/canaria-computer/nitiken_tester/releases/tag/version0.1.0)
+
+x64 アーキテクチャ 32bit版のみ 発行しています。(32bitソフトウェアは 64bit 環境OSでも動作するはずです。)
 
 2023年5月28日現在 開発途中です。
 
